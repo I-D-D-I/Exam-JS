@@ -35,18 +35,7 @@
 // // document.body.prepend(inp);
 // inp.addEventListener('input', (e) => handleInput(e.target.value));
     
-/////////////////////////
 
-import { data } from './data.js'
-
-const cont = document.querySelector('.services__wrapper');
-
-function box(data) {
-    for (let el of data) {
-        createCard(el);
-    }
-}
-box(data)
 
 
 // const obj = {
@@ -55,43 +44,70 @@ box(data)
 //     keywords:
 //       "hundred points symbol symbol wow wow win win perfect perfect parties parties",
 //   };
-  
-  
+
+/////////////////////////
+
+// import { data } from './data.js'
+
+// function createBox(data) {
+//     for (let el of data) {
+//         cont.append(createCard(el));
+//     }
+// }
+
+        // createBox(data)
+
+        // function createCard(newObj) {
+        //     const cardNew = document.createElement('div');
+        //     cardNew.className = 'services__item';
+          
+        //     const symbol = document.createElement('p');
+        //     symbol.textContent = newObj.symbol;
+        //     symbol.className = 'item__picture';
+          
+        //     const title = document.createElement('p');
+        //     title.textContent = newObj.title;
+        //     title.className = 'item__name';
+          
+        //     const keywords = document.createElement('p');
+        //     keywords.textContent = newObj.keywords;
+        //     keywords.className = 'item__text';
+          
+        //     cardNew.append(symbol, title, keywords);
+        //     return cardNew;
+        //   }
+        
+        //   createCard(data)
+    
+// const text = document.querySelector('.text');
+
+// text.addEventListener('click', () => text.classList.toggle('red'))
+
+import { data } from './data.js'
+
+const cont = document.querySelector('.services__wrapper');
+const inputLine = document.querySelector('.header__input');
+
+data.forEach((el) => cont.append(createCard(el)))
+
   function createCard(newObj) {
-    const itemNew = document.createElement('div');
-    itemNew.className = 'services__item';
-  
-    const pictureNew = document.createElement('p');
-    pictureNew.textContent = newObj.symbol;
-    pictureNew.className = 'item__picture';
-  
-    const nameNew = document.createElement('p');
-    nameNew.textContent = newObj.title;
-    nameNew.className = 'item__name';
-  
-    const textNew = document.createElement('p');
-    textNew.textContent = newObj.keywords;
-    textNew.className = 'item__text';
-  
-    itemNew.append(pictureNew, nameNew, textNew);
-    cont.append(itemNew);
+    const cardNew = document.createElement('div');
+    cardNew.className = 'services__item';
+    newObj.keywords = [... new Set(newObj.keywords.split(' '))].join(' ');
+    cardNew.innerHTML = `<p class='item__picture'>${newObj.symbol}</p>
+            <p class='item__name'>${newObj.title}</p> 
+            <p class='item__text'>${newObj.keywords}</p>`;
+    return cardNew;
   }
-  
-//   createCard(data)
 
-function handleInput(value) {
-    // console.log(value);
-    const el = document.querySelector('.title');
-    el2 = el.filter((item) => el.shift == value);
-    document.body.prepend(el2);
+inputLine.addEventListener('input', (e) => handleInput(e.target.value));
 
-    // if (value == data.title) {
-    //     console.log(data.title);
-        // document.body.prepend(p);
-    // }
-    // p.textContent = value;
-    // document.body.prepend(p);
-}
+function handleInput(e) {
+    cont.innerHTML = ' ';
+    let value = e.toLowerCase().trim();
 
-const inp = document.querySelector('.header__input');
-inp.addEventListener('input', (e) => handleInput(e.target.value));
+    data.filter((item) => item.title.toLowerCase().includes(value)).forEach((item) => cont.append(createCard(item)))
+
+    data.filter((item) => item.keywords.toLowerCase().includes(value)).forEach((item) => cont.append(createCard(item)))
+};
+
