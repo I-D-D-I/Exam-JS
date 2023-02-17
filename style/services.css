@@ -1,5 +1,5 @@
 .services {
-    margin-top: 79px;
+    margin-top: 60px;
 }
 .services__wrapper {
     text-align: center;
@@ -7,41 +7,54 @@
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-around;
-    margin: 20px auto;
-    gap: 19px;
+    margin: 0 auto;
+    gap: 20px;
 }
 .services__item {
-    width: 316px;
-    min-height: 186px;
+    width: 300px;
+    min-height: 136px;
     border: 0;
-    padding: 24px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
+    border: 1px solid black;
+    text-align: left;
+    /* align-items: start; */
+    /* justify-content: start; */
 }
-.item__picture {
-    font-size: 48px;
-    line-height: 48px;
-    color: #68717A;
-}
+/* A 84  */
+.gray {
+    background-color: gray;
+    /* color: white; */
+  }
+
 .item__name {
     font-weight: 700;
-    font-size: 17px;
-    line-height: 28px; 
-    text-decoration-line: underline;
+    font-size: 16px;
+    line-height: 26px; 
     color: #000000;
-    text-align: center;
-    margin: 18px 0 12px;
-    word-wrap: break-word;
-    /* max-width: 250px; */
+    margin-bottom: 5px;
+    white-space: nowrap; /* Текст не переносится */
+    overflow: hidden; /* Обрезаем всё за пределами блока */
+    text-overflow: ellipsis; /* Добавляем многоточие */
 }
 .item__text {
     font-size: 12px;
     line-height: 15px;
-    text-align: center;
     color: #3F444A;
-    word-wrap: break-word;
     max-width: 268px;
     height: auto;
-    margin-bottom: 39px;
+    margin-bottom: 5px;
 }
+.white {
+    color: white;
+}
+
+.checkbox {
+    margin-right: 90%;
+}
+
+.checkbox:checked + .services__item {
+    background-color: gray;
+  }

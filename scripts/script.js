@@ -1,113 +1,74 @@
-// const bttn = document.createElement('button');
-// bttn.textContent = 'hello';
-// document.body.prepend(bttn);
-// bttn.addEventListener('click', handleClick);
-    
-//     function handleClick() {
-//       return bttn.style.display = 'none';  
-//     }
+'use strict';
+// через фетч 1 вар 
+const response = await fetch('https://jsonplaceholder.typicode.com/posts/?_start=0&_limit=7')
+const data = await response.json()
+console.log(data)
 
-// function handleInput(value) {
-//     console.log(value);
-    // const p = document.createElement('p');
-    // p.textContent = value;
-    // document.body.prepend(p);
-// }
+// 4) заводим массив под вырезки с объектом и с ключами
+let texts = data; 
+//[{id: 2143534645, text: 'Text', isChecked: false}];    
+let selected = 0;   
 
-// const inp = document.createElement('input');
-// inp.textContent = 'hello';
-// document.body.prepend(inp);
-// inp.addEventListener('change', (e) => handleInput(e.target.value));
-        
-/////////////////////
+const wrap = document.querySelector('.services__wrapper');  // находим div, куда добавляем вырезки
+const card = document.querySelector('.services__item')    // находим div, где распологаем текст
+const form = document.querySelector('.input-field');  //  находим форму
+const checkbox = document.querySelector('.checkbox');  // находим checkbox
+const count = document.querySelector('.header__num')   // находим счетчик
+const addBtn = document.querySelector('.btn');  // находим button - текстовый фильтр по заголовку (фильтрация уже полученных элементов)
+// const title = document.querySelector('.item__name');
+// const text = document.querySelector('.item__text');
+const input = document.querySelector('.input');
 
-// function handleInput(value) {
-//     // console.log(value);
-//     if (value == data.title) {
-//         console.log(data.title);
-//     }
-//     // p.textContent = value;
-//     // document.body.prepend(p);
-// }
+// отменяем стандартное поведение формы (обновление)
+form.addEventListener("submit", (ev) => {
+  ev.preventDefault();
+});
+     
 
-// const inp = document.querySelector('.header__input');
-// // inp.textContent = 'hello';
-// // document.body.prepend(inp);
-// inp.addEventListener('input', (e) => handleInput(e.target.value));
-    
+// делаем первую функцию на отрисовку вырезок
+function drawTexts(obj) {
+  const newCard = document.createElement('div');
+  newCard.className = "services__item";
+  const checkbox = document.createElement('input');
+  checkbox.type = "checkbox";
+  checkbox.className = "checkbox";
+  newCard.innerHTML = `<p class='item__name'>${obj.title}</p>
+                      <p class='item__text'>${obj.body}</p>`;
+  newCard.append(checkbox);
+  const title = newCard.querySelector('.item__name');
+  const text = newCard.querySelector('.item__text');
+  // событие на чекбокс для подсчета и покраски 
+  checkbox.addEventListener('change', (ev) => {
+    newCard.classList.toggle('gray')
+    title.classList.toggle('white')
+    text.classList.toggle('white')
+    if (ev.target.checked) {
+      selected++;
+      count.innerHTML = `${selected}`;
+    } else {
+      selected--;
+      count.innerHTML = `${selected}`;
+    }
+  })
+  return newCard;
+}
+
+data.forEach((el) => wrap.append(drawTexts(el)))  // 
+
+
+// поиск по имени
+function handleInput() {
+  const valueInput = input.value;
+  wrap.innerHTML = '';
+  const newData = data.filter((item) => item.title.toLowerCase().includes(valueInput.toLowerCase().trim()));
+  return newData.forEach((el) => wrap.append(drawTexts(el)))
+  };
+  input.addEventListener('change', handleInput);
 
 
 
-// const obj = {
-//     title: "100",
-//     symbol: "💯",
-//     keywords:
-//       "hundred points symbol symbol wow wow win win perfect perfect parties parties",
-//   };
 
-/////////////////////////
 
-// import { data } from './data.js'
 
-// function createBox(data) {
-//     for (let el of data) {
-//         cont.append(createCard(el));
-//     }
-// }
 
-        // createBox(data)
-
-        // function createCard(newObj) {
-        //     const cardNew = document.createElement('div');
-        //     cardNew.className = 'services__item';
-          
-        //     const symbol = document.createElement('p');
-        //     symbol.textContent = newObj.symbol;
-        //     symbol.className = 'item__picture';
-          
-        //     const title = document.createElement('p');
-        //     title.textContent = newObj.title;
-        //     title.className = 'item__name';
-          
-        //     const keywords = document.createElement('p');
-        //     keywords.textContent = newObj.keywords;
-        //     keywords.className = 'item__text';
-          
-        //     cardNew.append(symbol, title, keywords);
-        //     return cardNew;
-        //   }
-        
-        //   createCard(data)
-    
-// const text = document.querySelector('.text');
-
-// text.addEventListener('click', () => text.classList.toggle('red'))
-
-import { data } from './data.js'
-
-const cont = document.querySelector('.services__wrapper');
-const inputLine = document.querySelector('.header__input');
-
-data.forEach((el) => cont.append(createCard(el)))
-
-  function createCard(newObj) {
-    const cardNew = document.createElement('div');
-    cardNew.className = 'services__item';
-    newObj.keywords = [... new Set(newObj.keywords.split(' '))].join(' ');
-    cardNew.innerHTML = `<p class='item__picture'>${newObj.symbol}</p>
-            <p class='item__name'>${newObj.title}</p> 
-            <p class='item__text'>${newObj.keywords}</p>`;
-    return cardNew;
-  }
-
-inputLine.addEventListener('input', (e) => handleInput(e.target.value));
-
-function handleInput(e) {
-    cont.innerHTML = ' ';
-    let value = e.toLowerCase().trim();
-
-    data.filter((item) => item.title.toLowerCase().includes(value)).forEach((item) => cont.append(createCard(item)))
-
-    data.filter((item) => item.keywords.toLowerCase().includes(value)).forEach((item) => cont.append(createCard(item)))
-};
 
